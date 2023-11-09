@@ -1,5 +1,5 @@
 <html>
-<head>  
+<head>   
     <title> Login Page </title>  
     <style>   
     Body {  
@@ -20,7 +20,7 @@
         }   
      input[type=text], input[type=password] {   
             width: 100%;   
-            margin: 8px 0;  
+            margin: 8px 0;   
             padding: 12px 20px;   
             display: inline-block;   
             border: 2px solid green;   
@@ -41,20 +41,21 @@
             background-color: lightblue;  
         }   
     </style>   
-    </head>    
+</head>    
     <body>    
         <center> <h1>  Login  </h1> </center>   
-        <form>  
+        <form method="post">  
+            {% csrf_token %}
             <div class="container">   
-                <label>Username : </label>   
-                <input type="text" placeholder="Enter Username" name="username" required>  
-            <label>Password : </label>   
-            <input type="password" placeholder="Enter Password" name="password" required>  
-            <button type="submit">Login</button>   
-            <input type="checkbox" checked="checked"> Remember me   
-            <button type="button" class="cancelbtn"> Cancel</button>   
-            Forgot <a href="#"> password? </a>   
-        </div>   
-    </form>     
-</body>     
+                <label for="username">Username : </label>   
+                <input type="text" placeholder="Enter Username" id="username" name="username">  
+               
+                <label for "password">Password : </label>   
+                <input type="password" placeholder="Enter Password" id="password" name="pass">  
+               
+                <button type="submit">Log In</button>   
+                
+            </div>   
+        </form>     
+    </body>     
 </html>  

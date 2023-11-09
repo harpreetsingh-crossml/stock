@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>sell stocks</title>
+    </head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <label for="stock_id">Select a stock to sell:</label>
+    <select name="stock_id" id="stock_id">
+        {% for stock in user_stocks %}
+            <option value="{{ stock.id }}">{{ stock.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="shares_to_sell">Number of shares to sell:</label>
+    <input type="number" name="shares_to_sell" id="shares_to_sell" required>
+    <br>
+    <button type="submit">Sell Stock</button>
+</form>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+</body>
+</html>

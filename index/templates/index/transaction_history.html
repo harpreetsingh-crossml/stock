@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>Transaction History</title>
+</head>
+<body>
+    <h1>Transaction History</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Stock Symbol</th>
+                <th>Price</th>
+                <th>Shares</th>
+                <th>Type</th>
+                <th>Date and Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transactions in transactions %}
+                <tr>
+                    <td>{{ transaction.stock_symbol }}</td>
+                    <td>${{ transaction.price }}</td>
+                    <td>{{ transaction.shares }}</td>
+                    <td>{{ transaction.get_transaction_type_display }}</td>
+                    <td>{{ transaction.date_time }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

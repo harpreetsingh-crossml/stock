@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'userside',
-    'api',
+    'stock_quote',
+    'index',
+    'sell_buy'
+
+
 ]
 
 MIDDLEWARE = [
@@ -128,3 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS =[
     BASE_DIR, "static"
 ]
+
+# API key 
+IEX_API_KEY = 'sk_f5db8502ccae44cea64f3ab923edfdcf'

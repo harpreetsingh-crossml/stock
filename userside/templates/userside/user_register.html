@@ -1,3 +1,4 @@
+{% load static %}
 <html>
     <head>
         <title>Registration Form</title>
@@ -8,36 +9,42 @@
         <br>
         <br> 
 
-        <form>
-            <label>Firstname:</label>
-            <input type="text" name="firstname" size="15"/><br><br>
-
-            <label>Lastname:</label>
-            <input type="text" name="lastname" size="15"/><br>
-        <br>
-        <br>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" placeholder="Username" name="username" id="username" size="15"/>
+            
+            <br>
+            <br>
             <label>Gender</label><br>
             <input type="radio" name="male"/>Male<br>
             <input type="radio" name="Female"/>Female<br>
             <input type="radio" name"other"/>Other
-        <br>
-        <br>
-         
+            <br>
+            <br>
+            
             <label>Phone:</label>
             <input type="text" name="country code" value="+91"size="2"/>
-            <input type="text" name="phone" size ="10"/><br><br>
-        Address 
-        <br>
-        <textarea cols="80" rows="5" value="address"></textarea>
-        <br><br>
+             <input type="text" name="phone" size ="10"/><br><br>
+            Address 
+            <br>
+
+            <textarea cols="80" rows="5" value="address"></textarea>
+            <br><br>
+            
+            <label for="email">Email:</label>
+            <input type="email" placeholder="Email or Phone" name="email" id="email"><br><br>
         
-        Email:
-            <input type="email" id="email" name="email"/><br><br>
-        Password:
-            <input type="Password" id="pass" name="pass"><br><br>
-        Repeat Password:
-            <input type="Password" id="repass" name="repass"><br><br>
-            <input type="button" value="Submit"/>
+            <label for="password1">Password</label>
+            <input type="password" placeholder="Password" id="password1" name="password1" ><br><br>
+            
+            <label for="password2">Confirm Password</label>
+            <input type="password" placeholder="Confirm Password" id="password2" name="password2"><br><br>
+                
+        
+            <button type="submit">Signup</button>
+            
+            <a href="#" > i have already account </a>
         
         </form>
     </body>

@@ -1,0 +1,16 @@
+<html>
+<head>
+    <title>Stock Quote Lookup</title>
+</head>
+<body>
+    <h1>Stock Quote Lookup</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Get Quote</button>
+    </form>
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+</body>
+</html>

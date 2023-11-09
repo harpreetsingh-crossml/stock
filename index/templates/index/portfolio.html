@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>Portfolio</title>
+</head>
+<body>
+    <h1>Portfolio</h1>
+    <h2>Total Portfolio Value: ${{ total_value }}</h2>
+    <h2>Cash Balance: ${{ cash_balance }}</h2>
+    <ul>
+        {% for item in portfolio_items %}
+            <li>
+                Stock: {{ item.stock_symbol }} - Shares: {{ item.shares }} - Purchase Price: ${{ item.purchase_price }} - Total Value: ${{ item.total_value }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

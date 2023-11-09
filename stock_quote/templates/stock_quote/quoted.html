@@ -1,0 +1,11 @@
+<html>
+<head>
+    <title>Stock Quote</title>
+</head>
+<body>
+    <h1>Stock Quote</h1>
+    <p>Symbol: {{ symbol }}</p>
+    <p>Stock Price: ${{ stock_price }}</p>
+    <a href="{% url 'get_stock_quote' %}">Back to Quote Lookup</a>
+</body>
+</html>
