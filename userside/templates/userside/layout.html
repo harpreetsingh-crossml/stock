@@ -18,15 +18,14 @@
           <a href="#" class="brand-logo center">Stocks Trading</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
-          {% if user.is_authenticated %}
           
-            <li ><a href="{% url 'userside:index' %}">Home</a></li>
-            <li ><a href="{% url 'userside:user-login' %}">Login</a></li>
-            <li ><a href="{% url 'userside:user-register' %}">Register</a></li>
+          <li ><a href="{% url 'userside:index' %}">Home</a></li>
+
+          {% if user.is_authenticated %}
             <li ><a href="{% url 'userside:logout' %}">Logout</a></li>
 
           {% else %}
-            <li ><a href="{% url 'userside:index' %}">Home</a></li>
+
             <li ><a href="{% url 'userside:user-login' %}">Login</a></li>
             <li ><a href="{% url 'userside:user-register' %}">Register</a></li>
           {% endif %}

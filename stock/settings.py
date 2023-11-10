@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userside',
     'stock_quote',
-    'index',
-    'sell_buy'
 
 
 ]
@@ -135,3 +133,4 @@ STATICFILES_DIRS =[
 
 # API key 
 IEX_API_KEY = 'sk_f5db8502ccae44cea64f3ab923edfdcf'
+IEX_API_TOKEN = 'sk_f5db8502ccae44cea64f3ab923edfdcf'
