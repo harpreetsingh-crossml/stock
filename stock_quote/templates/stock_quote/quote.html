@@ -1,10 +1,15 @@
+{% extends "stock_quote/stock_home.html" %}
+{% load static %}
+{% csrf_token %}
+{% block body %}
+
 <html>
 <head>
     <title>Stock Quote Lookup</title>
 </head>
 <body>
-    <h1>Stock Quote Lookup</h1>
-    <form method="post">
+    <h3>Stock Quote Lookup</h3>
+    <form method="post" action="{% url 'stock_quote:quote' %}">
         {% csrf_token %}
         {{ form }}
         <button type="submit">Get Quote</button>
@@ -14,3 +19,5 @@
     {% endif %}
 </body>
 </html>
+
+{% endblock %}

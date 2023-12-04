@@ -1,29 +1,25 @@
 # stock_quote/views.py
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import StockQuoteForm
+from .models import Stocks
 from  django.conf import settings
 
 
-def get_stock_quote(request):
-    form = StockQuoteForm()
-
+def quote(request):
     if request.method == 'POST':
         form = StockQuoteForm(request.POST)
         if form.is_valid():
             symbol = form.cleaned_data['symbol']
-            
-            # Make a request to the IEX Cloud API to get the stock price
-            
-            api_url = f'https://cloud.iexapis.com/stable/stock/{symbol}/quote?token={settings.IEX_API_TOKEN}'
-            response = requests.get(api_url)
-            
-            if response.status_code == 200:
-                data = response.json()
-                stock_price = data['latestPrice']
-                return render(request, 'stock_quote/quoted.html', {'symbol': symbol, 'stock_price': stock_price})
-            else:
-                error_message = 'Failed to fetch stock data. Please check the symbol and try again.'
-                return render(request, 'stock_quote/quote.html', {'form': form, 'error_message': error_message})
+            # Fetch dummy stock data from the database
+            stock_data = Stocks.objects.get(symbol=symbol)
+           
+            return render(request, 'stock_quote/quoted.html', {'stock_data': stock_data})
     else:
-        return render(request, 'stock_quote/quote.html', {'form': form})
+        form = StockQuoteForm()
+    return render(request, 'stock_quote/quote.html', {'form': form})
+    
+
+
+def stock_home(request):
+    return render(request,"stock_quote/stock_home.html")

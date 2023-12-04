@@ -1,9 +1,22 @@
+{% extends "stock_quote/stock_home.html" %}
+{% load static %}
+{% csrf_token %}
+{% block body %}
+
 <html>
 <head>
     <title>Transaction History</title>
+
+<style>
+        h3{
+            text-align:center;
+            background-color: Bisque; 
+        }      
+</style>
+
 </head>
 <body>
-    <h1>Transaction History</h1>
+    <h3>Transaction History</h3>
     <table>
         <thead>
             <tr>
@@ -17,7 +30,7 @@
         <tbody>
             {% for transactions in transactions %}
                 <tr>
-                    <td>{{ transaction.stock_symbol }}</td>
+                    <td>{{ transaction.symbol }}</td>
                     <td>${{ transaction.price }}</td>
                     <td>{{ transaction.shares }}</td>
                     <td>{{ transaction.get_transaction_type_display }}</td>
@@ -28,3 +41,5 @@
     </table>
 </body>
 </html>
+
+{% endblock %}

@@ -11,6 +11,18 @@
     <script src="{% static 'shares/layout.js' %}"></script>
     {% endblock %}
 </head>
+
+<style>
+    .nav-wrapper {   
+        background-color: PaleVioletRed;  
+    }
+
+    .footer {  
+            background-color: black;  
+             color: white;   
+    } 
+</style>
+
 <body>
 
     <nav class="blue">
@@ -19,7 +31,12 @@
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
           
-          <li ><a href="{% url 'userside:index' %}">Home</a></li>
+          <li ><a href="{% url 'userside:index2' %}">Home</a></li>
+          <li ><a href="{% url 'stock_quote:quote' %}">Stock Quote</a></li>
+          <li ><a href="{% url 'userside:buy-stock' %}">buy</a></li>
+          <li ><a href="{% url 'userside:sell-stock' %}">sell</a></li>
+          <li ><a href="{% url 'userside:portfolio' %}">portfolio</a></li>
+          <li ><a href="{% url 'userside:transaction-history' %}">transaction</a></li>
 
           {% if user.is_authenticated %}
             <li ><a href="{% url 'userside:logout' %}">Logout</a></li>
@@ -51,6 +68,11 @@
       </div>
   
 
+ <div class="true-body">
+    <h4>WELCOME TO MY WEBSITE :   paisa hi paisa hoga</h4>
+</div>
+
+
   <!-- start banner Area -->
 <section class="banner-area relative" id="home">
   <div class="overlay overlay-bg"></div>
@@ -64,7 +86,35 @@
 </section>
 <!-- End banner Area -->
 
- 
+ <!-- start footer Area -->
+ <footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2  col-md-6">
+                <div class="single-footer-widget">
+                    <h6>Links</h6>
+                    {% if request.user.is_authenticated %}
+                    <ul class="footer-nav">
+                        <li><a href="{% url 'userside:logout' %}">Logout</a></li>
+                    </ul>
+
+                   
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+  
+        <div class="row footer-bottom d-flex justify-content-between">
+            <p class="col-lg-8 col-sm-12 footer-text m-0">
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </script>
+               <a href="#" target="_blank"><h3>Stock Trading</h3></a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        </div>
+    </div>
+  </footer>
+<!-- End footer Area -->
+
 
 </body>
 </html>

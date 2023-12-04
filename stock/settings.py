@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'userside',
     'stock_quote',
 
-
 ]
 
 MIDDLEWARE = [

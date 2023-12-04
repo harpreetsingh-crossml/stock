@@ -1,51 +1,97 @@
 {% load static %}
-<html>
-    <head>
-        <title>Registration Form</title>
-    </head>
-    <body bgcolor="skyblue">
-        <center> <h1> Registration </h1> </center>   
-      
-        <br>
-        <br> 
+ 
+<html>   
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title> Login Page </title>  
+<style>   
+Body {  
+  font-family: Calibri, Helvetica, sans-serif;  
+  background-color: burlywood; 
+}  
 
-        <form action="" method="post">
-            {% csrf_token %}
-            <label for="username">Username:</label>
-            <input type="text" placeholder="Username" name="username" id="username" size="15"/>
-            
-            <br>
-            <br>
-            <label>Gender</label><br>
-            <input type="radio" name="male"/>Male<br>
-            <input type="radio" name="Female"/>Female<br>
-            <input type="radio" name"other"/>Other
-            <br>
-            <br>
-            
-            <label>Phone:</label>
-            <input type="text" name="country code" value="+91"size="2"/>
-             <input type="text" name="phone" size ="10"/><br><br>
-            Address 
-            <br>
+button {   
+        background-color: #61468c;   
+        width: 30%;  
+        color: white;   
+        padding: 15px;   
+        margin-left: 10px ;  
+        margin-right: 10px ; 
+        border: none;   
+        cursor: pointer;   
+}   
 
-            <textarea cols="80" rows="5" value="address"></textarea>
-            <br><br>
-            
-            <label for="email">Email:</label>
+input[type=text]{   
+            width: 60%;   
+            margin-left: 50px; 
+            padding: 15px 40px;   
+            display: inline-block;   
+            border: 2px solid green;   
+            box-sizing: border-box;   
+}  
+input[type=email]{   
+            width: 60%;   
+            margin-left: 80px; 
+            padding: 15px 40px;   
+            display: inline-block;   
+            border: 2px solid green;   
+            box-sizing: border-box;   
+}
+input[type=password]{   
+            width: 60%;   
+            margin-left: 55px; 
+            padding: 15px 60px;   
+            display: inline-block;   
+            border: 2px solid green;   
+            box-sizing: border-box;   
+}
+input[type=password2]{   
+            width: 60%;   
+            margin-left: 0px; 
+            padding: 15px 60px;   
+            display: inline-block;   
+            border: 2px solid green;   
+            box-sizing: border-box;   
+}
+
+button:hover {   
+        opacity: 0.7;   
+        }   
+         
+.container {   
+        width: 30%;
+        height: 50%;
+        padding: 75px;  
+        margin: auto;
+        background-color: lightpink;  
+        border: 4px solid green;
+    }   
+</style>   
+</head>    
+<body>    
+    <center> <h1>  Sign Up  </h1> </center>   
+    <form method="post">  
+        {% csrf_token %}
+        <div class="container">   
+            <label for="username">Username : </label>   
+            <input type="text" placeholder="Enter Username" id="username" name="username">  
+           <br>
+           <br>
+           <label for="email">Email :</label>
             <input type="email" placeholder="Email or Phone" name="email" id="email"><br><br>
         
-            <label for="password1">Password</label>
+            <label for="password1">Password :</label>
             <input type="password" placeholder="Password" id="password1" name="password1" ><br><br>
             
-            <label for="password2">Confirm Password</label>
-            <input type="password" placeholder="Confirm Password" id="password2" name="password2"><br><br>
-                
-        
-            <button type="submit">Signup</button>
+            <label for="password2">Confirm Password : </label>
+            <input type="password2" placeholder="Confirm Password" id="password2" name="password2"><br><br>
             
-            <a href="#" > i have already account </a>
+            <br>
+            <br>
         
-        </form>
-    </body>
-</html>
+            <button type="submit">Sign up</button>
+            <a href="userside/user_login.html" > i have already account </a>
+        </div>   
+    </form>     
+</body>     
+</html>  

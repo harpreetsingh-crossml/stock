@@ -1,12 +1,14 @@
 import requests
 
-def fetch_stock_price(stock_symbol):
-    # You should replace this with a real API call to get stock prices
-    api_url = f"https://api.example.com/stock/{stock_symbol}/price"
-    response = requests.get(api_url)
+def get_stock_price(symbol,price):
+    # Implement code to fetch stock price from an API or database
+    # For example, you can use a financial data API like Alpha Vantage or Yahoo Finance
+    # Replace the following line with your actual implementation
+    response = requests.get({symbol,price})
+    data = response
+    return data['price']
     
-    if response.status_code == 200:
-        data = response.json()
-        return data.get("price", 0.0)
-    else:
-        return 0.0
+
+
+    
+    

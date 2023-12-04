@@ -1,0 +1,29 @@
+{% extends "stock_quote/stock_home.html" %}
+{% load static %}
+{% csrf_token %}
+{% block body %}
+
+<html>
+    <head>
+        <title>sell stocks</title>
+
+        <style>
+            h3{
+                text-align:center;
+                background-color: Thistle; 
+            }   
+        </style>
+
+    </head>
+<body>
+    <h3>Buy Stocks</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Buy Stocks</button>
+    </form>
+
+</body>
+</html>
+
+{% endblock %}

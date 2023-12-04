@@ -1,11 +1,20 @@
+{% extends "stock_quote/stock_home.html" %}
+{% load static %}
+{% csrf_token %}
+{% block body %}
+
 <html>
 <head>
     <title>Stock Quote</title>
 </head>
 <body>
-    <h1>Stock Quote</h1>
-    <p>Symbol: {{ symbol }}</p>
-    <p>Stock Price: ${{ stock_price }}</p>
-    <a href="{% url 'quote' %}">Back to Quote Lookup</a>
+    <h2>Stock Quote</h2>
+    
+    <p>Company name: {{ stock_data.symbol }}</p>
+    <p>Price: &#8377;{{ stock_data.price }}</p>
+   
+    <a href="{% url 'stock_quote:quote' %}">Back to Quote Lookup</a>
 </body>
 </html>
+
+{% endblock %}
