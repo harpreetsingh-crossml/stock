@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 
 from django.contrib.auth.decorators import login_required
-from .models import StockSell, Stock, UserProfile, Transaction
+from .models import Stock,  StockSell, UserProfile, Transaction
 from .models import Portfolio
 from .forms import BuyStockForm, SellStockForm
 from .utils import get_stock_price
@@ -75,13 +75,13 @@ def banner_image(request):
 
 def buy_stock(request):
     if request.method == 'POST':
+        price = request.POST.get ('price')
         form = BuyStockForm(request.POST)
         if form.is_valid():
             symbol = form.cleaned_data['symbol']
             shares = form.cleaned_data['shares']
-            total = form.cleaned_data['total']
-            stock_data = Stocks.objects.filter(price=price)
-            total = price * shares ; {'stock_data': stock_data}
+            stock_data = Stocks.objects.get(symbol=symbol)
+           
                     # user = request.user
                     #  user_account = UserProfile.objects.get(user=user)
 
@@ -100,7 +100,7 @@ def buy_stock(request):
                              #   total=total
                           #  )
 
-            return render(request, 'userside/confirmation.html', {'message': 'Stock purchased successfully!'})
+            return render(request, 'userside/confirmation.html',  {'stock_data': stock_data})
         else:
             return render(request, 'userside/apology.html', {'message': 'Insufficient funds!'})
 
@@ -120,11 +120,13 @@ def sell_stock(request):
         if form.is_valid():
             symbol = form.cleaned_data['symbol']
             shares = form.cleaned_data['shares']
+            stock_data = Stocks.objects.get(symbol=symbol)
+            account_balance = 1000
            # price = request.POST['price']
-           # total_amount = price * shares
+          
             
             # Check if the user can afford the purchase
-            if total_amount <= request.user.account_balance:
+         
                       # Deduct the amount from the user's account
                     #  request.user.account_balance -= total_amount
                     # request.user.save()
@@ -139,10 +141,10 @@ def sell_stock(request):
                     #)
 
                     # Render a confirmation message
-                messages.success(request, f"Stocks bought successfully! Transaction ID: {transaction.id}")
-                return redirect(request, 'userside/confirmation.html')  # Redirect to the user's dashboard or any other relevant page
-            else:
-             messages.error(request, "Insufficient funds. Cannot complete the purchase.")
+                #    messages.success(request, f"Stocks bought successfully! Transaction ID: {transaction.id}")
+            return render(request, 'userside/confirmation2.html',  {'stock_data': stock_data})  # Redirect to the user's dashboard or any other relevant page
+            #else:
+            messages.error(request, "Insufficient funds. Cannot complete the purchase.")
         else:
                 messages.error(request, "Invalid input. Please check your input and try again.")
     else:
@@ -155,31 +157,30 @@ def sell_stock(request):
 
 def portfolio(request):
     user = request.user
-    #portfolio = Portfolio.objects.get(user=user)
+    portfolio = Portfolio.objects.get(user=user)
     transactions = Transaction.objects.filter(user=user)
 
     # Calculate the total portfolio value
     #total_value = portfolio.cash_balance
 
     holdings = []
-    for transaction in transactions:
+    for transaction in transations:
         stock = transaction.stock
         shares = transaction.shares
-        price = get_stock_price(stock.symbol)  # Call the lookup function for stock prices
+        price = get_stock_price(stock.symbol) # call the lookup function for stock prices
         value = shares * price
         total_value += value
 
-        holdings.append({
+        holdings.append9({
             'stock': stock,
             'shares': shares,
-            'price': price,
-            'value': value,
+            'price' : price,
+            'value' : value,
         })
-
     context = {
         'portfolio': portfolio,
         'holdings': holdings,
-       # 'total_value': total_value,
+        # 'total_value': total_value,
     }
 
     return render(request, 'userside/portfolio.html', context)
@@ -191,62 +192,5 @@ def transaction_history(request):
     return render(request, 'userside/transaction_history.html', {'transactions': transactions})
 
 
-#def sell_stock(request):
-    symbol = UserProfile.objects.get(user=request.user)
-    stocks = Stock.objects.all()
 
-    if request.method == 'POST':
-        stock_symbol = request.POST['stock']
-        shares_to_sell = int(request.POST['shares'])
-
-        stock = get_object_or_404(Stock, symbol=stock_symbol)
-        user_balance = user_profile.balance
-
-        if user_balance >= stock.current_price * shares_to_sell:
-            # Update user balance
-            user_profile.balance -= stock.current_price * shares_to_sell
-            user_profile.save()
-
-            # Record the sale transaction
-            Transaction.objects.create(
-                user=request.user,
-                stock=stock,
-                shares=shares_to_sell,
-                price=stock.current_price
-            )
-
-            return render(request, 'confirmation.html', {'message': 'Stock sold successfully.'})
-        else:
-            return render(request, 'confirmation.html', {'message': 'Insufficient funds.'})
-
-    return render(request, 'sell_stock.html', {'stocks': stocks})
-
-
-
-
-#def sell_stock(request):
-    form = SellStockForm(request.POST)
-    if request.method == 'POST':
-        stock_id = request.POST['stock_id']
-        shares_to_sell = int(request.POST['shares_to_sell'])
-        
-        # Check if the user owns the selected stock
-        user_profile = UserProfile.objects.get(user=request.user)
-        stock = Stock.objects.get(pk=stock_id)
-        
-        if shares_to_sell <= 0 or shares_to_sell > user_profile.stock_holding(stock):
-            error_message = "Invalid number of shares to sell"
-        else:
-            # Record the sale transaction
-            transaction = Transaction(user=user_profile, stock=stock, shares_sold=shares_to_sell)
-            transaction.save()
-            
-            # Update the user's account balance
-            user_profile.balance += shares_to_sell * stock.price
-            user_profile.save()
-            
-            success_message = "Stock sold successfully."
-    
-    stocks = Stock.objects.all()
-    return render(request, 'userside/sell_stocks.html', {'stocks': stocks})
 

@@ -4,7 +4,7 @@
 {% block body %}
 
 <html lang="en">
-<head>
+    <head>
     <meta charset="UTF-8">
     <title>Portfolio</title>
 
@@ -18,7 +18,7 @@
         }   
 </style>
 
-</head>
+    </head>
 <body>
     <h3>Portfolio</h3>
     <h4>Cash Balance:-23500</h4>
@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for stock in stocks %}
+            {% for item in portfolio_data %}
                 <tr>
                     <td>{{ stock.symbol }}</td>
                     <td>{{ stock.shares }}</td>
@@ -43,7 +43,7 @@
             {% endfor %}
         </tbody>
     </table>
-
+    <p>Total Cash Balance: ${{ total_cash }}</p>
 
 </body>
 </html>

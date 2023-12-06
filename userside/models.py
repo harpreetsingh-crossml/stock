@@ -1,6 +1,8 @@
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from stock_quote.models import Stocks
+
 
 
 
@@ -15,7 +17,7 @@ class UserProfile(models.Model):
 class Stock(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     symbol = models.CharField(max_length=10, unique=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=1000, decimal_places=2)
     shares = models.PositiveIntegerField()
     total= models.IntegerField(validators=[MaxValueValidator(10000)])
     purchase_price = models.FloatField()
@@ -25,8 +27,9 @@ class Stock(models.Model):
 #sell stocks
 
 class StockSell(models.Model):
-   symbol = models.CharField(max_length=10, unique=True)
-   shares = models.CharField(max_length=100)
+    symbol = models.ForeignKey(Stocks, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=1000, decimal_places=2)
+    shares = models.CharField(max_length=100)
    
 
 class UserProfile(models.Model):
@@ -35,7 +38,7 @@ class UserProfile(models.Model):
 
 class Transaction(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    stock = models.ForeignKey(StockSell, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stocks, on_delete=models.CASCADE)
     shares_sold = models.PositiveIntegerField()
     transaction_date = models.DateTimeField(auto_now_add=True)
 
@@ -45,8 +48,9 @@ class Transaction(models.Model):
 
 #portfolio
 class Stock(models.Model):
-    symbol = models.CharField(max_length=10)
-    name = models.CharField(max_length=255)
+    symbol = models.CharField(max_length=10, unique=True)
+    price = models.DecimalField(max_digits=1000, decimal_places=2)
+    
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -62,7 +66,7 @@ class Portfolio(models.Model):
 #transaction
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    stock_symbol = models.CharField(max_length=10)
+    symbol = models.CharField(max_length=10)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     shares = models.PositiveIntegerField()
     transaction_type = models.CharField(max_length=4, choices=[('BUY', 'Buy'), ('SELL', 'Sell')])

@@ -9,11 +9,11 @@
     </head>
 
 <body>
-    <h2>Stock Buy Successful!</h2>
-    <p>Company name: {{ stock_data.symbol }}</p>
-    <p>Price: &#8377;{{ stock_data.price }}</p>
+    <h2>Stock Sell Successful!</h2>
+    
+    <p>Total Price: ${{ stock_data.price }}</p>
 
-    <a href="{% url 'userside:buy-stock' %}">Back to Buy Stock</a>
+    <a href="{% url 'userside:sell-stock' %}">Back to Sell Stock</a>
 </body>
 </html>
 
