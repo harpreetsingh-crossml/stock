@@ -32,6 +32,36 @@
                 <th>Current Price</th>
                 <th>Total Value</th>
             </tr>
+            <tr>
+                <td>crossml</td>
+                <td>2</td>
+                <td>800.90</td>
+                <td>1601.08</td>
+            </tr>
+            <tr>
+                <td>tata</td>
+                <td>4</td>
+                <td>350.90</td>
+                <td>1403.6</td>
+            </tr>
+            <tr>
+                <td>Amazon</td>
+                <td>2</td>
+                <td>280.00</td>
+                <td>560</td>
+            </tr>
+            <tr>
+                <td>TCS</td>
+                <td>3</td>
+                <td>300.00</td>
+                <td>900</td>
+            </tr>
+            <tr>
+                <td>reliance</td>
+                <td>2</td>
+                <td>150.70</td>
+                <td>301.4</td>
+            </tr>
         </thead>
         <tbody>
             {% for item in portfolio_data %}
@@ -41,6 +71,14 @@
                     <td>{{ stock.price }}</td>
                     <td>{{ stock.total_value }}</td>
                 </tr>
+
+                <tr>
+                    <td>crossml</td>
+                    <td>2</td>
+                    <td>800.90</td>
+                    <td>1601.08</td>
+                </tr>
+
             {% endfor %}
         </tbody>
     </table>
