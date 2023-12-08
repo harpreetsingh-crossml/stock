@@ -22,6 +22,7 @@
 <body>
     <h3>Portfolio</h3>
     <h4>Cash Balance:-23500</h4>
+    <p>Cash Balance: ${{ total_cash }}</p>
     <p>{{ cash_balance }}</p>
     <table>
         <thead>
@@ -35,15 +36,15 @@
         <tbody>
             {% for item in portfolio_data %}
                 <tr>
-                    <td>{{ stock.symbol }}</td>
-                    <td>{{ stock.shares }}</td>
+                    <td>{{ stock_data.symbol }}</td>
+                    <td>{{ stock_data.shares }}</td>
                     <td>{{ stock.price }}</td>
                     <td>{{ stock.total_value }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <p>Total Cash Balance: ${{ total_cash }}</p>
+   
 
 </body>
 </html>

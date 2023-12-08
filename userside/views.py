@@ -3,10 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import authenticate, login, logout
 
 from django.contrib.auth.decorators import login_required
-from .models import Stock,  StockSell, UserProfile, Transaction
+from .models import Stock, StockSell, UserProfile, Transaction
 from .models import Portfolio
 from .forms import BuyStockForm, SellStockForm
 from .utils import get_stock_price
@@ -55,7 +55,7 @@ def user_login(request):
                login(request,user)
                return redirect('stock_quote:quote')
           else:
-                return HttpResponse("Username or Password is incorrect")
+               messages.error(request, 'Invalid username or password. Please try again.')
 
      return render (request,'userside/user_login.html')
 
@@ -110,8 +110,9 @@ def buy_stock(request):
     return render(request, 'userside/buy_stocks.html', {'form': form})
 
 
-# sell stocks
 
+
+# sell stocks
 
 def sell_stock(request):
     
@@ -157,39 +158,42 @@ def sell_stock(request):
 
 def portfolio(request):
     user = request.user
-    portfolio = Portfolio.objects.get(user=user)
+    portfolio = Portfolio.objects.all()
     transactions = Transaction.objects.filter(user=user)
+    stock_data = Stocks.objects.all()
 
     # Calculate the total portfolio value
     #total_value = portfolio.cash_balance
 
     holdings = []
-    for transaction in transations:
-        stock = transaction.stock
-        shares = transaction.shares
-        price = get_stock_price(stock.symbol) # call the lookup function for stock prices
-        value = shares * price
-        total_value += value
+    #for transaction in transactions:
+       # stock = transaction.stock
+       # shares = transaction.shares
+       # price = get_stock_price(stock.symbol) # call the lookup function for stock prices
+       # value = shares * price
+       # total_value += value
 
-        holdings.append9({
-            'stock': stock,
-            'shares': shares,
-            'price' : price,
-            'value' : value,
-        })
+       # holdings.append9({
+        #    'stock': stock,
+        #    'shares': shares,
+        #    'price' : price,
+        #    'value' : value,
+       # })
     context = {
         'portfolio': portfolio,
         'holdings': holdings,
         # 'total_value': total_value,
     }
 
-    return render(request, 'userside/portfolio.html', context)
+    return render(request, 'userside/portfolio.html', {'stock_data': stock_data})
 
 
 def transaction_history(request):
     user = request.user
+    transactions = Transaction.objects.all()
     transactions = Transaction.objects.filter(user=user).order_by('-date_time')
     return render(request, 'userside/transaction_history.html', {'transactions': transactions})
+
 
 
 

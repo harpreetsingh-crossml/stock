@@ -20,7 +20,7 @@
     <table>
         <thead>
             <tr>
-                <th>Stock Symbol</th>
+                <th>Symbol</th>
                 <th>Price</th>
                 <th>Shares</th>
                 <th>Type</th>
@@ -28,7 +28,8 @@
             </tr>
         </thead>
         <tbody>
-            {% for transactions in transactions %}
+            {% for item in transaction_data %}
+
                 <tr>
                     <td>{{ transaction.symbol }}</td>
                     <td>${{ transaction.price }}</td>
@@ -36,6 +37,7 @@
                     <td>{{ transaction.get_transaction_type_display }}</td>
                     <td>{{ transaction.date_time }}</td>
                 </tr>
+
             {% endfor %}
         </tbody>
     </table>
@@ -43,3 +45,4 @@
 </html>
 
 {% endblock %}
+
