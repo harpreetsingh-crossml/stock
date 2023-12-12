@@ -2,7 +2,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from stock_quote.models import Stocks
-
+from django.utils import timezone
 
 
 # sell buy models:
@@ -15,15 +15,14 @@ class UserProfile(models.Model):
 
 class Stock(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    symbol = models.CharField(max_length=10, unique=True)
-    price = models.DecimalField(max_digits=1000, decimal_places=2)
-    shares = models.PositiveIntegerField()
+    symbol = models.CharField(default=0, max_length=10, unique=True)
+    price = models.DecimalField(default=0.0, max_digits=1000, decimal_places=2)
+    shares = models.IntegerField(default=0)
     total= models.IntegerField(validators=[MaxValueValidator(10000)])
-    purchase_price = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    purchase_price = models.DecimalField(default=0.0, max_digits=10000, decimal_places=2,)
+    timestamp = models.DateTimeField(default=timezone.now)
 
-
-    
+ 
 
 #sell stocks
 
@@ -33,34 +32,10 @@ class StockSell(models.Model):
     shares = models.ImageField(max_length=100)
    
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=10000.00)
-
-class Transaction(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    stock = models.ForeignKey(Stocks, on_delete=models.CASCADE)
-    shares_sold = models.PositiveIntegerField()
-    transaction_date = models.DateTimeField(auto_now_add=True)
-
-
 
 # portfolio & transaction
 
-
 #portfolio
-
-class Stock(models.Model):
-    symbol = models.CharField(max_length=10, unique=True)
-    price = models.DecimalField(max_digits=1000, decimal_places=2)
-    
-
-class Transaction(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    stock = models.ForeignKey(Stocks, on_delete=models.CASCADE)
-    shares = models.IntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateTimeField(auto_now_add=True)
 
 class Portfolio(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -79,4 +54,6 @@ class Transaction(models.Model):
     date_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.transaction_type} - {self.stock_symbol} - {self.date_time}"
+        return f"{self.transaction_type} - {self.symbol} - {self.date_time}"
+
+

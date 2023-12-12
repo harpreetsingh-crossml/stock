@@ -16,6 +16,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import Transaction
 from stock_quote.models import Stocks
+from .models import Transaction
 
 # log in & log out views
 
@@ -75,30 +76,32 @@ def banner_image(request):
 
 def buy_stock(request):
     if request.method == 'POST':
-        price = request.POST.get ('price')
+        
         form = BuyStockForm(request.POST)
         if form.is_valid():
             symbol = form.cleaned_data['symbol']
             shares = form.cleaned_data['shares']
+            price = request.POST.get ('price')
             stock_data = Stocks.objects.get(symbol=symbol)
            
-                    # user = request.user
-                    #  user_account = UserProfile.objects.get(user=user)
+            user = request.user
+            user_account = UserProfile.objects.get(user=user)
 
-                        # Check if the user can afford the purchase
-                       # purchase_price = get_stock_price(symbol) * shares
-                        #if user_account.balance >= purchase_price:
-                            # Deduct the purchase amount from the user's account
-                        #    user_account.balance -= purchase_price
-                        #  user_account.save()
+            # Check if the user can afford the purchase
+
+            total = (symbol) * shares
+            if user_account.balance >= total:
+                 
+            # Deduct the purchase amount from the user's accoun
+                user_account.balance -= total
+                user_account.save()
                         
-                            # Record the transaction in the database
-                      #  Stocks.objects.create(
-                               
-                            #    symbol=symbol,
-                             #   shares=shares,
-                             #   total=total
-                          #  )
+            # Record the transaction in the database
+            Stocks.objects.create(
+                symbol=symbol,
+                shares=shares,
+                total=total
+            )
 
             return render(request, 'userside/confirmation.html',  {'stock_data': stock_data})
         else:
@@ -121,28 +124,34 @@ def sell_stock(request):
         if form.is_valid():
             symbol = form.cleaned_data['symbol']
             shares = form.cleaned_data['shares']
+            price = request.POST.get ('price')
             stock_data = Stocks.objects.get(symbol=symbol)
             account_balance = 1000
-           # price = request.POST['price']
-          
+        
+            user = request.user
+            user_account = UserProfile.objects.get(user=user)
             
-            # Check if the user can afford the purchase
-         
-                      # Deduct the amount from the user's account
-                    #  request.user.account_balance -= total_amount
-                    # request.user.save()
-               
-                    # Record the transaction
-                     # transaction = Stocks.objects.create(
-                    #    user=request.user,
-                        # symbol=symbol,
-                     #   shares=shares,
-                       # price=price,
-                      #  total_amount=total_amount
-                    #)
+           # Check if the user can afford the purchase
+            total = (symbol) * shares
+            if user_account.balance >= total:
 
-                    # Render a confirmation message
-                #    messages.success(request, f"Stocks bought successfully! Transaction ID: {transaction.id}")
+
+           # Deduct the amount from the user's account
+
+                request.user.account_balance -= total
+                request.user.save()
+               
+            # Record the transaction
+            transaction = Stocks.objects.create(
+            user=request.user,
+            symbol=symbol,
+            shares=shares,
+            price=price,
+            total=total
+            )
+
+            # Render a confirmation message
+            messages.success(request, f"Stocks bought successfully! Transaction ID: {transaction.id}")
             return render(request, 'userside/confirmation2.html',  {'stock_data': stock_data})  # Redirect to the user's dashboard or any other relevant page
             #else:
             messages.error(request, "Insufficient funds. Cannot complete the purchase.")
@@ -188,13 +197,23 @@ def portfolio(request):
     return render(request, 'userside/portfolio.html', {'stock_data': stock_data})
 
 
+#def transaction_history(request): 
+  #  user = request.user
+   # transactions = Transaction.objects.all()
+   # transactions = Transaction.objects.filter(user=user).order_by('-date_time')
+   # return render(request, 'userside/transaction_history.html', {'transactions': transactions})
+
+
 def transaction_history(request):
-    user = request.user
-    transactions = Transaction.objects.all()
-    transactions = Transaction.objects.filter(user=user).order_by('-date_time')
-    return render(request, 'userside/transaction_history.html', {'transactions': transactions})
-
-
-
-
+    if request.method=="POST":
+        symbol=request.POST.get ('symbol')
+        price=request.POST.get ('price')    
+        shares=request.POST.get ('shares')    
+        transaction_type=request.POST.get ('transaction_type')    
+        date_time=request.POST.get ('date_time')    
+      
+        stock_data = Transaction(symbol=symbol,price=price,shares=shares,transaction_type=transaction_type,date_time=date_time)
+        stock_data.save()
+    else:
+        return render(request,'userside/transaction_history.html')
 

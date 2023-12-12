@@ -1,4 +1,4 @@
-{% extends "stock_quote/stock_home.html" %}
+{% extends "userside/stocks.html" %}
 {% load static %}
 {% csrf_token %}
 {% block body %}
@@ -21,7 +21,7 @@
     </head>
 <body>
     <h3>Portfolio</h3>
-    <h4>Cash Balance:-23500</h4>
+    <h4>Cash Balance:- &#8377;11500</h4>
     <p>Cash Balance: ${{ total_cash }}</p>
     <p>{{ cash_balance }}</p>
     <table>
@@ -71,18 +71,23 @@
                     <td>{{ stock.price }}</td>
                     <td>{{ stock.total_value }}</td>
                 </tr>
-
-                <tr>
-                    <td>crossml</td>
-                    <td>2</td>
-                    <td>800.90</td>
-                    <td>1601.08</td>
-                </tr>
-
             {% endfor %}
+
         </tbody>
     </table>
-   
+
+<!-- start banner Area -->
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-8 col-md-12">
+                <img src="{% static 'images/portfolio2.png' %}" alt="banner" width="1100" height="600">
+            </div>
+        </div>
+    </div>
+  </section>
+<!-- End banner Area -->
 
 </body>
 </html>
