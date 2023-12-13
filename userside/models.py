@@ -14,13 +14,13 @@ class UserProfile(models.Model):
     balance = models.FloatField(default=10000.0)  # Starting balance for each user
 
 class Stock(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    symbol = models.CharField(default=0, max_length=10, unique=True)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
+    symbol = models.CharField(max_length=10, unique=True)
     price = models.DecimalField(default=0.0, max_digits=1000, decimal_places=2)
     shares = models.IntegerField(default=0)
-    total= models.IntegerField(validators=[MaxValueValidator(10000)])
+    total= models.IntegerField(default=0, validators=[MaxValueValidator(10000)])
     purchase_price = models.DecimalField(default=0.0, max_digits=10000, decimal_places=2,)
-    timestamp = models.DateTimeField(default=timezone.now)
+    date_time = models.DateTimeField(default=timezone.now)
 
  
 
@@ -28,7 +28,7 @@ class Stock(models.Model):
 
 class StockSell(models.Model):
     symbol = models.ForeignKey(Stocks, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=1000, decimal_places=2)
+    price = models.DecimalField(default=0, max_digits=1000, decimal_places=2)
     shares = models.ImageField(max_length=100)
    
 
@@ -39,7 +39,7 @@ class StockSell(models.Model):
 
 class Portfolio(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    cash_balance = models.DecimalField(max_digits=10, decimal_places=2)
+    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
 
 
@@ -47,11 +47,11 @@ class Portfolio(models.Model):
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    symbol = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    symbol = models.CharField(default='no', max_length=255)
+    price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     shares = models.PositiveIntegerField()
-    transaction_type = models.CharField(max_length=4, choices=[('BUY', 'Buy'), ('SELL', 'Sell')])
-    date_time = models.DateTimeField(auto_now_add=True)
+    transaction_type = models.CharField(max_length=255, choices=[('BUY', 'Buy'), ('SELL', 'Sell')], null=False)
+    date_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.transaction_type} - {self.symbol} - {self.date_time}"

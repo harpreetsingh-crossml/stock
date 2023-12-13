@@ -56,13 +56,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in transaction_data %}
+            {% for transaction in transactions %}
 
                 <tr>
                     <td>{{ transaction.symbol }}</td>
                     <td>${{ transaction.price }}</td>
                     <td>{{ transaction.shares }}</td>
-                    <td>{{ transaction.get_transaction_type_display }}</td>
+                    <td>{{ transaction.transaction_type }}</td>
                     <td>{{ transaction.date_time }}</td>
                 </tr>
 

@@ -70,43 +70,37 @@ def banner_image(request):
 
 
 # sell buy views are here:
-
+ 
 #buy stocks
 @login_required
 
 def buy_stock(request):
     if request.method == 'POST':
-        
         form = BuyStockForm(request.POST)
         if form.is_valid():
-            symbol = form.cleaned_data['symbol']
+            stock_symbol = form.cleaned_data['stock_symbol']
             shares = form.cleaned_data['shares']
             price = request.POST.get ('price')
-            stock_data = Stocks.objects.get(symbol=symbol)
-           
+
+            price = shares * price
+
             user = request.user
-            user_account = UserProfile.objects.get(user=user)
+            if user.account_balance >= price:
+                # Deduct the purchase amount from the user's account
+                user.account_balance -= price
+                user.save()
 
-            # Check if the user can afford the purchase
+                # Record the transaction
+                transaction = Transaction.objects.create(
+                    user=user,
+                    stock_symbol=stock_symbol,
+                    shares=shares,
+                    price=price
+                )
 
-            total = (symbol) * shares
-            if user_account.balance >= total:
-                 
-            # Deduct the purchase amount from the user's accoun
-                user_account.balance -= total
-                user_account.save()
-                        
-            # Record the transaction in the database
-            Stocks.objects.create(
-                symbol=symbol,
-                shares=shares,
-                total=total
-            )
-
-            return render(request, 'userside/confirmation.html',  {'stock_data': stock_data})
-        else:
-            return render(request, 'userside/apology.html', {'message': 'Insufficient funds!'})
-
+                return render(request, 'userside/confirmation.html', {'transaction': transaction})
+            else:
+                return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
     else:
         form = BuyStockForm()
 
@@ -116,6 +110,8 @@ def buy_stock(request):
 
 
 # sell stocks
+
+@login_required
 
 def sell_stock(request):
     
@@ -142,7 +138,7 @@ def sell_stock(request):
                 request.user.save()
                
             # Record the transaction
-            transaction = Stocks.objects.create(
+            transaction = Transaction.objects.create(
             user=request.user,
             symbol=symbol,
             shares=shares,
@@ -153,7 +149,7 @@ def sell_stock(request):
             # Render a confirmation message
             messages.success(request, f"Stocks bought successfully! Transaction ID: {transaction.id}")
             return render(request, 'userside/confirmation2.html',  {'stock_data': stock_data})  # Redirect to the user's dashboard or any other relevant page
-            #else:
+            # else:
             messages.error(request, "Insufficient funds. Cannot complete the purchase.")
         else:
                 messages.error(request, "Invalid input. Please check your input and try again.")
@@ -210,10 +206,14 @@ def transaction_history(request):
         price=request.POST.get ('price')    
         shares=request.POST.get ('shares')    
         transaction_type=request.POST.get ('transaction_type')    
-        date_time=request.POST.get ('date_time')    
+        date_time =request.POST.get ('date_time')    
       
-        stock_data = Transaction(symbol=symbol,price=price,shares=shares,transaction_type=transaction_type,date_time=date_time)
-        stock_data.save()
+        transaction=Transaction(symbol=symbol, price=price, shares=shares, transaction_type=transaction_type, date_time=date_time)
+        transaction.save()
     else:
         return render(request,'userside/transaction_history.html')
 
+
+#def transaction_history(request):
+    #transactions = Transaction.objects.filter(user=request.user).order_by('-date_time')
+    #return render(request, 'transaction_history.html', {'transactions': transactions})
