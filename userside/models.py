@@ -11,7 +11,7 @@ from django.utils import timezone
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    balance = models.FloatField(default=10000.0)  # Starting balance for each user
+    account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0) # Starting balance for each user
 
 class Stock(models.Model):
     user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
@@ -29,7 +29,7 @@ class Stock(models.Model):
 class StockSell(models.Model):
     symbol = models.ForeignKey(Stocks, on_delete=models.CASCADE)
     price = models.DecimalField(default=0, max_digits=1000, decimal_places=2)
-    shares = models.ImageField(max_length=100)
+    shares = models.IntegerField()
    
 
 
@@ -39,8 +39,10 @@ class StockSell(models.Model):
 
 class Portfolio(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-
+    symbol = models.CharField(default='no', max_length=255)
+    shares = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
 #transaction
@@ -48,12 +50,14 @@ class Portfolio(models.Model):
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     symbol = models.CharField(default='no', max_length=255)
-    price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     shares = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     transaction_type = models.CharField(max_length=255, choices=[('BUY', 'Buy'), ('SELL', 'Sell')], null=False)
-    date_time = models.DateTimeField(default=timezone.now)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=20500)
+    date_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.transaction_type} - {self.symbol} - {self.date_time}"
+        return f"{self.user.username} - {self.symbol} - {self.shares} shares"
 
 

@@ -21,7 +21,7 @@
     </head>
 <body>
     <h3>Portfolio</h3>
-    <h4>Cash Balance:- &#8377;11500</h4>
+    <h4>Cash Balance:- &#8377;20500</h4>
     <p>Cash Balance: ${{ total_cash }}</p>
     <p>{{ cash_balance }}</p>
     <table>
@@ -31,36 +31,42 @@
                 <th>Shares</th>
                 <th>Current Price</th>
                 <th>Total Value</th>
+                <th>Sell Stock</th>
             </tr>
             <tr>
                 <td>crossml</td>
                 <td>2</td>
                 <td>800.90</td>
                 <td>1601.08</td>
+                <td><a href="{% url 'userside:sell-stock' %}">Sell</a></td>
             </tr>
             <tr>
                 <td>tata</td>
                 <td>4</td>
                 <td>350.90</td>
                 <td>1403.6</td>
+                <td><a href="{% url 'userside:sell-stock' %}">Sell</a></td>
             </tr>
             <tr>
                 <td>Amazon</td>
                 <td>2</td>
                 <td>280.00</td>
                 <td>560</td>
+                <td><a href="{% url 'userside:sell-stock' %}">Sell</a></td>
             </tr>
             <tr>
                 <td>TCS</td>
                 <td>3</td>
                 <td>300.00</td>
                 <td>900</td>
+                <td><a href="{% url 'userside:sell-stock' %}">Sell</a></td>
             </tr>
             <tr>
                 <td>reliance</td>
                 <td>2</td>
                 <td>150.70</td>
                 <td>301.4</td>
+                <td><a href="{% url 'userside:sell-stock' %}">Sell</a></td>
             </tr>
         </thead>
         <tbody>

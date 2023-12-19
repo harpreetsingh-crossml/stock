@@ -12,6 +12,7 @@
     <h2>Stock Buy Successful!</h2>
     <p>Company name: {{ stock_data.symbol }}</p>
     <p>Price: &#8377;{{ stock_data.price }}</p>
+    
 
     <a href="{% url 'userside:buy-stock' %}">Back to Buy Stock</a>
 </body>

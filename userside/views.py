@@ -70,7 +70,7 @@ def banner_image(request):
 
 
 # sell buy views are here:
- 
+
 #buy stocks
 @login_required
 
@@ -78,34 +78,45 @@ def buy_stock(request):
     if request.method == 'POST':
         form = BuyStockForm(request.POST)
         if form.is_valid():
-            stock_symbol = form.cleaned_data['stock_symbol']
+            symbol = form.cleaned_data['symbol']
             shares = form.cleaned_data['shares']
             price = request.POST.get ('price')
+            
+           
+            #price = request.POST.get ('price')
+            stock_data = Stocks.objects.get(symbol=symbol)
+            
 
-            price = shares * price
+        if price is not None:
+            total = shares * price
+        else:
+            total = 0 
 
-            user = request.user
-            if user.account_balance >= price:
+            user = UserProfile.objects.get(user=request.user)
+            account_balance = user.account_balance
+            if UserProfile.account_balance >= price:
                 # Deduct the purchase amount from the user's account
                 user.account_balance -= price
                 user.save()
-
-                # Record the transaction
-                transaction = Transaction.objects.create(
-                    user=user,
-                    stock_symbol=stock_symbol,
+                
+                # Record the transaction ""
+            transaction = Transaction.objects.create(
+                   # user=user,
+                    symbol=symbol,
                     shares=shares,
-                    price=price
+                    price=price,
+                    
                 )
+            transaction.save()
 
-                return render(request, 'userside/confirmation.html', {'transaction': transaction})
-            else:
-                return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
+
+            return render(request, 'userside/confirmation.html', {'transaction': transaction})
+           # else:
+        return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
     else:
         form = BuyStockForm()
 
     return render(request, 'userside/buy_stocks.html', {'form': form})
-
 
 
 
@@ -124,33 +135,33 @@ def sell_stock(request):
             stock_data = Stocks.objects.get(symbol=symbol)
             account_balance = 1000
         
-            user = request.user
-            user_account = UserProfile.objects.get(user=user)
+           # user = request.user
+            #user_account = UserProfile.objects.get(user=user)
             
            # Check if the user can afford the purchase
-            total = (symbol) * shares
-            if user_account.balance >= total:
+            #total = (symbol) * shares
+           # if user_account.balance >= total:
 
 
            # Deduct the amount from the user's account
 
-                request.user.account_balance -= total
-                request.user.save()
+                #request.user.account_balance -= total
+                #request.user.save()
                
             # Record the transaction
-            transaction = Transaction.objects.create(
-            user=request.user,
-            symbol=symbol,
-            shares=shares,
-            price=price,
-            total=total
-            )
+            #transaction = Transaction.objects.create(
+            #user=request.user,
+            #symbol=symbol,
+            #shares=shares,
+            #price=price,
+            #total=total
+            #)
 
             # Render a confirmation message
-            messages.success(request, f"Stocks bought successfully! Transaction ID: {transaction.id}")
+            #messages.success(request, f"Stocks bought successfully! Transaction ID: {transaction.id}")
             return render(request, 'userside/confirmation2.html',  {'stock_data': stock_data})  # Redirect to the user's dashboard or any other relevant page
             # else:
-            messages.error(request, "Insufficient funds. Cannot complete the purchase.")
+            #messages.error(request, "Insufficient funds. Cannot complete the purchase.")
         else:
                 messages.error(request, "Invalid input. Please check your input and try again.")
     else:
@@ -200,7 +211,7 @@ def portfolio(request):
    # return render(request, 'userside/transaction_history.html', {'transactions': transactions})
 
 
-def transaction_history(request):
+#def transaction_history(request):
     if request.method=="POST":
         symbol=request.POST.get ('symbol')
         price=request.POST.get ('price')    
@@ -214,6 +225,14 @@ def transaction_history(request):
         return render(request,'userside/transaction_history.html')
 
 
-#def transaction_history(request):
-    #transactions = Transaction.objects.filter(user=request.user).order_by('-date_time')
-    #return render(request, 'transaction_history.html', {'transactions': transactions})
+def transaction_history(request):
+    transactions = Transaction.objects.filter(user=request.user).order_by('-date_time')
+    return render(request, 'userside/transaction_history.html', {'transactions': transactions})
+
+
+
+@login_required
+
+def account_balance(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    return render(request, 'userside/account_balance.html', {'user_profile': user_profile})
