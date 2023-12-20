@@ -87,32 +87,32 @@ def buy_stock(request):
             stock_data = Stocks.objects.get(symbol=symbol)
             
 
-        if price is not None:
-            total = shares * price
-        else:
-            total = 0 
+            if price is not None:
+                total = shares * price
+            else:
+                total = 0 
 
             user = UserProfile.objects.get(user=request.user)
             account_balance = user.account_balance
-            if UserProfile.account_balance >= price:
+            if account_balance >= total:
                 # Deduct the purchase amount from the user's account
-                user.account_balance -= price
+                user.account_balance -= total
                 user.save()
                 
                 # Record the transaction ""
-            transaction = Transaction.objects.create(
-                   # user=user,
+                transaction = Transaction.objects.create(
+                    user=user,
                     symbol=symbol,
                     shares=shares,
                     price=price,
-                    
+                    total=total,  
                 )
-            transaction.save()
+                transaction.save()
 
 
             return render(request, 'userside/confirmation.html', {'transaction': transaction})
-           # else:
-        return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
+        else:
+            return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
     else:
         form = BuyStockForm()
 
