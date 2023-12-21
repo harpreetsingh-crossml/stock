@@ -75,17 +75,57 @@ def banner_image(request):
 @login_required
 
 def buy_stock(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = BuyStockForm(request.POST)
+
+        if form.is_valid():
+            symbol = form.cleaned_data['symbol']
+            shares = form.cleaned_data['shares']
+            price = request.POST.get ('price')
+
+            stock = Stocks.objects.get(symbol=symbol)
+
+
+            # Perform validation and calculate the purchase amount
+            # Ensure the user can afford the purchase
+            user_profile = UserProfile.objects.get(user=request.username)
+            purchase_amount = shares * stock.price # Calculate purchase amount based on stock price and number of shares
+
+            if user_profile.account_balance >= purchase_amount:
+                # Deduct the purchase amount from the user's balance
+                user_profile.account_balance -= purchase_amount
+                user_profile.save()
+
+                # Record the transaction
+                Transaction.objects.create(
+                    user=request.user,
+                    symbol=symbol,
+                    shares=shares,
+                    total=purchase_amount
+                )
+
+                # Render confirmation message
+                return render(request, 'userside/confirmation.html', {'message': 'Stock purchased successfully!'})
+            else:
+                # Render apology message if the user can't afford the purchase
+                return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
+    else:
+        form = BuyStockForm()
+
+    return render(request, 'userside/buy_stocks.html', {'form': form})
+
+
+#def buy_stock(request):
     if request.method == 'POST':
         form = BuyStockForm(request.POST)
         if form.is_valid():
             symbol = form.cleaned_data['symbol']
             shares = form.cleaned_data['shares']
             price = request.POST.get ('price')
-            
-           
-            #price = request.POST.get ('price')
+
             stock_data = Stocks.objects.get(symbol=symbol)
-            
 
             if price is not None:
                 total = shares * price
@@ -100,14 +140,14 @@ def buy_stock(request):
                 user.save()
                 
                 # Record the transaction ""
-                transaction = Transaction.objects.create(
+            transaction = Transaction.objects.create(
                     user=user,
                     symbol=symbol,
                     shares=shares,
                     price=price,
-                    total=total,  
+                    
                 )
-                transaction.save()
+            transaction.save()
 
 
             return render(request, 'userside/confirmation.html', {'transaction': transaction})
@@ -117,7 +157,6 @@ def buy_stock(request):
         form = BuyStockForm()
 
     return render(request, 'userside/buy_stocks.html', {'form': form})
-
 
 
 # sell stocks
@@ -204,13 +243,6 @@ def portfolio(request):
     return render(request, 'userside/portfolio.html', {'stock_data': stock_data})
 
 
-#def transaction_history(request): 
-  #  user = request.user
-   # transactions = Transaction.objects.all()
-   # transactions = Transaction.objects.filter(user=user).order_by('-date_time')
-   # return render(request, 'userside/transaction_history.html', {'transactions': transactions})
-
-
 #def transaction_history(request):
     if request.method=="POST":
         symbol=request.POST.get ('symbol')
@@ -226,13 +258,8 @@ def portfolio(request):
 
 
 def transaction_history(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by('-date_time')
+    transactions = Transaction.objects.all()
     return render(request, 'userside/transaction_history.html', {'transactions': transactions})
 
 
 
-@login_required
-
-def account_balance(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    return render(request, 'userside/account_balance.html', {'user_profile': user_profile})
