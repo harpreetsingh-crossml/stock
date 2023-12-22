@@ -10,7 +10,7 @@ urlpatterns = [
 # login logout urls
     path('admin/', admin.site.urls),
     path('index/', views.index, name="index"),
-    path('index2/', views.index2, name="index2"),
+    path('home/', views.home, name="home"),
     
     path('user-register/', views.user_register, name="user-register"),
     path('user-login/', views.user_login, name="user-login"),
@@ -24,6 +24,6 @@ urlpatterns = [
 # portfolio & transaction
     path('portfolio/', views.portfolio, name='portfolio'),
     path('transaction-history/', views.transaction_history, name='transaction-history'),
-    path('account-balance/', views.account_balance, name='account-balance'),
+   
 
 ]

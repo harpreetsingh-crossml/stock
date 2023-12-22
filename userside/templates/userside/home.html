@@ -10,34 +10,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="{% static 'shares/layout.js' %}"></script>
     {% endblock %}
+</head>
 
 <style>
     .nav-wrapper {   
-        background-color: purple;  
-    } 
+        background-color: PaleVioletRed;  
+    }
+
     .footer {  
-        background-color: black;  
-         color: white;   
+            background-color: black;  
+             color: white;   
     } 
-    
 </style>
 
-</head>
 <body>
 
     <nav class="blue">
         <div class="nav-wrapper">
-          <a href="#" class="brand-logo center">Stocks Trading</a>
+          <a href="#" class="brand-logo center"><b>Stocks Trading</b></a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
           
-          <li ><a href="{% url 'userside:index2' %}">Home</a></li>
+          <li ><a href="{% url 'userside:home' %}">Home</a></li>
           <li ><a href="{% url 'stock_quote:quote' %}">Stock Quote</a></li>
           <li ><a href="{% url 'userside:buy-stock' %}">buy</a></li>
           <li ><a href="{% url 'userside:sell-stock' %}">sell</a></li>
           <li ><a href="{% url 'userside:portfolio' %}">portfolio</a></li>
           <li ><a href="{% url 'userside:transaction-history' %}">transaction</a></li>
-
 
           {% if user.is_authenticated %}
             <li ><a href="{% url 'userside:logout' %}">Logout</a></li>
@@ -61,23 +60,31 @@
         <li ><a href="{% url 'userside:user-login' %}">Login</a></li>
         <li ><a href="{% url 'userside:user-register' %}">Register</a></li>
       {% endif %}
-
-    </ul>
+      </ul>
   
       <div class="body">
           {% block body %}
           {% endblock %}
       </div>
   
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
+ <div class="true-body">
+  <h4><b>WELCOME TO MY WEBSITE :</b>   Invest Right, Invest Now</h4>
+</div>
+
+
+  <!-- start banner Area -->
+<section class="banner-area relative" id="home">
+  <div class="overlay overlay-bg"></div>
+  <div class="container">
+      <div class="row fullscreen d-flex align-items-center justify-content-center">
+          <div class="banner-content col-lg-8 col-md-12">
+              <img src="{% static 'images/banner.jpg' %}" alt="banner" width="1100" height="600">
+          </div>
+      </div>
+  </div>
+</section>
+<!-- End banner Area -->
 
  <!-- start footer Area -->
  <footer class="footer">
@@ -88,9 +95,13 @@
                     <h6>Links</h6>
                     {% if request.user.is_authenticated %}
                     <ul class="footer-nav">
-                        <li><a href="{% url 'userside:index2' %}">Home</a></li>
-                        <li><a href="{% url 'userside:logout' %}">Logout</a></li>
+                      <li><a href="{% url 'stock_quote:quote' %}">Stock Quote</a></li>
+                      <li><a href="{% url 'userside:portfolio' %}">portfolio</a></li>
+                      <li><a href="{% url 'userside:transaction-history' %}">transaction</a></li>
+                      <li><a href="{% url 'userside:logout' %}">Logout</a></li>
                     </ul>
+
+                   
                     {% endif %}
                 </div>
             </div>
@@ -106,6 +117,7 @@
     </div>
   </footer>
 <!-- End footer Area -->
+
 
 </body>
 </html>

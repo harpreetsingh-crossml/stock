@@ -23,8 +23,8 @@ from .models import Transaction
 def index(request):
      return render(request,"userside/index.html")
 
-def index2(request):
-     return render(request,"userside/index2.html")
+def home(request):
+     return render(request,"userside/home.html")
 
 
 
@@ -74,50 +74,9 @@ def banner_image(request):
 #buy stocks
 @login_required
 
+
+
 def buy_stock(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-
-    if request.method == 'POST':
-        form = BuyStockForm(request.POST)
-
-        if form.is_valid():
-            symbol = form.cleaned_data['symbol']
-            shares = form.cleaned_data['shares']
-            price = request.POST.get ('price')
-
-            stock = Stocks.objects.get(symbol=symbol)
-
-
-            # Perform validation and calculate the purchase amount
-            # Ensure the user can afford the purchase
-            user_profile = UserProfile.objects.get(user=request.username)
-            purchase_amount = shares * stock.price # Calculate purchase amount based on stock price and number of shares
-
-            if user_profile.account_balance >= purchase_amount:
-                # Deduct the purchase amount from the user's balance
-                user_profile.account_balance -= purchase_amount
-                user_profile.save()
-
-                # Record the transaction
-                Transaction.objects.create(
-                    user=request.user,
-                    symbol=symbol,
-                    shares=shares,
-                    total=purchase_amount
-                )
-
-                # Render confirmation message
-                return render(request, 'userside/confirmation.html', {'message': 'Stock purchased successfully!'})
-            else:
-                # Render apology message if the user can't afford the purchase
-                return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
-    else:
-        form = BuyStockForm()
-
-    return render(request, 'userside/buy_stocks.html', {'form': form})
-
-
-#def buy_stock(request):
     if request.method == 'POST':
         form = BuyStockForm(request.POST)
         if form.is_valid():
@@ -242,19 +201,6 @@ def portfolio(request):
 
     return render(request, 'userside/portfolio.html', {'stock_data': stock_data})
 
-
-#def transaction_history(request):
-    if request.method=="POST":
-        symbol=request.POST.get ('symbol')
-        price=request.POST.get ('price')    
-        shares=request.POST.get ('shares')    
-        transaction_type=request.POST.get ('transaction_type')    
-        date_time =request.POST.get ('date_time')    
-      
-        transaction=Transaction(symbol=symbol, price=price, shares=shares, transaction_type=transaction_type, date_time=date_time)
-        transaction.save()
-    else:
-        return render(request,'userside/transaction_history.html')
 
 
 def transaction_history(request):
