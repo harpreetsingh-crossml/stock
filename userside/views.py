@@ -74,48 +74,46 @@ def banner_image(request):
 #buy stocks
 @login_required
 
-
-
 def buy_stock(request):
     if request.method == 'POST':
-        form = BuyStockForm(request.POST)
-        if form.is_valid():
-            symbol = form.cleaned_data['symbol']
-            shares = form.cleaned_data['shares']
-            price = request.POST.get ('price')
+            form = BuyStockForm(request.POST)
+            if form.is_valid():
+                symbol = form.cleaned_data['symbol']
+                shares = form.cleaned_data['shares']
+                price = request.POST.get ('price')
 
-            stock_data = Stocks.objects.get(symbol=symbol)
-
-
-            if price is not None:
-                total = shares * price
-            else:
-                total = 0 
+                stock_data = Stocks.objects.get(symbol=symbol)
 
 
-            user = UserProfile.objects.get(user=request.user)
-            account_balance = user.account_balance
-            if account_balance >= total:
-                # Deduct the purchase amount from the user's account
-                user.account_balance -= total
-                user.save()
-                
-                # Record the transaction ""
-            transaction = Transaction.objects.create(
-                    user=user,
-                    symbol=symbol,
-                    shares=shares,
-                    price=price,
+                if price is not None:
+                    total = shares * price
+                else:
+                    total = 0 
+
+
+                user = UserProfile.objects.get(user=request.user)
+                account_balance = user.account_balance
+                if account_balance >= total:
+                    # Deduct the purchase amount from the user's account
+                    user.account_balance -= total
+                    user.save()
                     
-                )
-            transaction.save()
+                    # Record the transaction ""
+                    transaction = Transaction.objects.create(
+                        user=user,
+                        symbol=symbol,
+                        shares=shares,
+                        price=price,
+                        
+                    )
+                    transaction.save()
 
 
-            return render(request, 'userside/confirmation.html', {'transaction': transaction})
-        else:
-            return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
+                    return render(request, 'userside/confirmation.html', {'transaction': transaction})
+                else:
+                    return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
     else:
-        form = BuyStockForm()
+            form = BuyStockForm()
 
     return render(request, 'userside/buy_stocks.html', {'form': form})
 

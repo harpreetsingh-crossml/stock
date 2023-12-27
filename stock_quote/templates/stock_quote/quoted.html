@@ -11,17 +11,24 @@
         th,b{   
             color: purple;  
         } 
+        body{
+            text-align: center;
+        }
+        
     </style>
 
 </head>
 
 <body>
-    <h2>Stock Quote</h2>
-    <p><b>Company name:</b> {{ stock_data.name }}</p>
-    <p><b>Symbol: </b>{{ stock_data.symbol }}</p>
-    <p><b>Available Shares: </b>{{ stock_data.available_shares }}</p>
-    <p><b>Price: </b>&#8377;{{ stock_data.price }}</p>
-    <button type="submit">BUY</button>
+    <form method="post" action="{% url 'userside:buy-stock' %}">
+        {% csrf_token %}
+        <h2>Stock Quote</h2>
+        <p><b>Company name:</b> {{ stock_data.name }}</p>
+        <p><b>Symbol: </b>{{ stock_data.symbol }}</p>
+        <p><b>Available Shares: </b>{{ stock_data.available_shares }}</p>
+        <p><b>Price: </b>&#8377;{{ stock_data.price }}</p>
+        <button type="submit">BUY</button>
+        
 <br>
 <br>
     <a href="{% url 'stock_quote:quote' %}">Back to Quote Lookup</a>
