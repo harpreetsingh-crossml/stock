@@ -74,6 +74,8 @@ def banner_image(request):
 #buy stocks
 @login_required
 
+
+
 def buy_stock(request):
     if request.method == 'POST':
         form = BuyStockForm(request.POST)
@@ -81,27 +83,26 @@ def buy_stock(request):
             symbol = form.cleaned_data['symbol']
             shares = form.cleaned_data['shares']
             price = request.POST.get ('price')
-            
-           
-            #price = request.POST.get ('price')
+
             stock_data = Stocks.objects.get(symbol=symbol)
-            
-            
-        if price is not None:
-            total = shares * price
-        else:
-            total = 0 
+
+
+            if price is not None:
+                total = shares * price
+            else:
+                total = 0 
+
 
             user = UserProfile.objects.get(user=request.user)
             account_balance = user.account_balance
-            if UserProfile.account_balance >= price:
+            if account_balance >= total:
                 # Deduct the purchase amount from the user's account
-                user.account_balance -= price
+                user.account_balance -= total
                 user.save()
                 
                 # Record the transaction ""
             transaction = Transaction.objects.create(
-                   # user=user,
+                    user=user,
                     symbol=symbol,
                     shares=shares,
                     price=price,
@@ -111,13 +112,12 @@ def buy_stock(request):
 
 
             return render(request, 'userside/confirmation.html', {'transaction': transaction})
-           # else:
-        return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
+        else:
+            return render(request, 'userside/apology.html', {'message': 'Insufficient funds.'})
     else:
         form = BuyStockForm()
 
     return render(request, 'userside/buy_stocks.html', {'form': form})
-
 
 
 # sell stocks
@@ -204,35 +204,10 @@ def portfolio(request):
     return render(request, 'userside/portfolio.html', {'stock_data': stock_data})
 
 
-#def transaction_history(request): 
-  #  user = request.user
-   # transactions = Transaction.objects.all()
-   # transactions = Transaction.objects.filter(user=user).order_by('-date_time')
-   # return render(request, 'userside/transaction_history.html', {'transactions': transactions})
-
-
-#def transaction_history(request):
-    if request.method=="POST":
-        symbol=request.POST.get ('symbol')
-        price=request.POST.get ('price')    
-        shares=request.POST.get ('shares')    
-        transaction_type=request.POST.get ('transaction_type')    
-        date_time =request.POST.get ('date_time')    
-      
-        transaction=Transaction(symbol=symbol, price=price, shares=shares, transaction_type=transaction_type, date_time=date_time)
-        transaction.save()
-    else:
-        return render(request,'userside/transaction_history.html')
-
 
 def transaction_history(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by('-date_time')
+    transactions = Transaction.objects.all()
     return render(request, 'userside/transaction_history.html', {'transactions': transactions})
 
 
 
-@login_required
-
-def account_balance(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    return render(request, 'userside/account_balance.html', {'user_profile': user_profile})

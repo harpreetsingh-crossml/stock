@@ -56,14 +56,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for transaction in transactions %}
+            {% for item in transactions %}
 
                 <tr>
-                    <td>{{ transaction.symbol }}</td>
-                    <td>${{ transaction.price }}</td>
-                    <td>{{ transaction.shares }}</td>
-                    <td>{{ transaction.transaction_type }}</td>
-                    <td>{{ transaction.date_time }}</td>
+                    <td>{{ item.symbol }}</td>
+                    <td> &#8377; {{ item.price }}</td>
+                    <td>{{ item.shares }}</td>
+                    <td>{{ item.transaction_type }}</td>
+                    <td>{{ item.date_time }}</td>
                 </tr>
 
             {% endfor %}

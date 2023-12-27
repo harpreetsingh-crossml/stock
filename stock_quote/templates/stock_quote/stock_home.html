@@ -84,13 +84,6 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
  <!-- start footer Area -->
  <footer class="footer">
@@ -102,6 +95,12 @@
                     {% if request.user.is_authenticated %}
                     <ul class="footer-nav">
                         <li><a href="{% url 'userside:home' %}">Home</a></li>
+<<<<<<< HEAD
+=======
+                        <li ><a href="{% url 'stock_quote:quote' %}">Stock Quote</a></li>
+                        <li ><a href="{% url 'userside:portfolio' %}">portfolio</a></li>
+                        <li ><a href="{% url 'userside:transaction-history' %}">transaction</a></li>
+>>>>>>> f1dd2cdee6341b222438235591f04d0bf59c30d9
                         <li><a href="{% url 'userside:logout' %}">Logout</a></li>
                     </ul>
                     {% endif %}

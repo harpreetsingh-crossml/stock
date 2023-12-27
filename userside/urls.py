@@ -24,6 +24,6 @@ urlpatterns = [
 # portfolio & transaction
     path('portfolio/', views.portfolio, name='portfolio'),
     path('transaction-history/', views.transaction_history, name='transaction-history'),
-    path('account-balance/', views.account_balance, name='account-balance'),
+   
 
 ]

@@ -70,6 +70,7 @@
 
  <div class="true-body">
     <h4><b>WELCOME TO STOCKS TRADING </b> :   Invest Right, Invest Now</h4>
+
 </div>
 
 
@@ -95,7 +96,10 @@
                     <h6>Links</h6>
                     {% if request.user.is_authenticated %}
                     <ul class="footer-nav">
-                        <li><a href="{% url 'userside:logout' %}">Logout</a></li>
+                      <li><a href="{% url 'stock_quote:quote' %}">Stock Quote</a></li>
+                      <li><a href="{% url 'userside:portfolio' %}">portfolio</a></li>
+                      <li><a href="{% url 'userside:transaction-history' %}">transaction</a></li>
+                      <li><a href="{% url 'userside:logout' %}">Logout</a></li>
                     </ul>
 
                    

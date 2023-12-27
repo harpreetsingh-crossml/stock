@@ -11,7 +11,7 @@ from django.utils import timezone
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0) # Starting balance for each user
+    account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=20500) # Starting balance for each user
 
 class Stock(models.Model):
     user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
@@ -54,7 +54,6 @@ class Transaction(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     transaction_type = models.CharField(max_length=255, choices=[('BUY', 'Buy'), ('SELL', 'Sell')], null=False)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=20500)
     date_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
