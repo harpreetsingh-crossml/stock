@@ -23,8 +23,8 @@ from .models import Transaction
 def index(request):
      return render(request,"userside/index.html")
 
-def index2(request):
-     return render(request,"userside/index2.html")
+def home(request):
+     return render(request,"userside/home.html")
 
 
 
@@ -86,7 +86,7 @@ def buy_stock(request):
             #price = request.POST.get ('price')
             stock_data = Stocks.objects.get(symbol=symbol)
             
-
+            
         if price is not None:
             total = shares * price
         else:

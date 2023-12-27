@@ -6,14 +6,52 @@
 <html>
 <head>
     <title>Stock Quote</title>
+
+    <style>
+        th,b{   
+            color: purple;  
+        } 
+    </style>
+
 </head>
+
 <body>
     <h2>Stock Quote</h2>
-    
-    <p>Company name: {{ stock_data.symbol }}</p>
-    <p>Price: &#8377;{{ stock_data.price }}</p>
-   
+    <p><b>Company name:</b> {{ stock_data.name }}</p>
+    <p><b>Symbol: </b>{{ stock_data.symbol }}</p>
+    <p><b>Available Shares: </b>{{ stock_data.available_shares }}</p>
+    <p><b>Price: </b>&#8377;{{ stock_data.price }}</p>
+    <button type="submit">BUY</button>
+<br>
+<br>
     <a href="{% url 'stock_quote:quote' %}">Back to Quote Lookup</a>
+
+<br>
+<br>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Company name: </th>
+                <th>Symbol</th>
+                <th>Available Shares</th>
+                <th>Price &#8377;</th>
+                <th>BUY STOCK</th>
+
+                
+            </tr>
+            <tr>
+                <td> {{ stock_data.name }}</td>
+                <td>{{ stock_data.symbol }}</td>
+                <td>{{ stock_data.available_shares }}</td>
+                <td>&#8377;{{ stock_data.price }}</td>
+                <td><button type="submit">BUY</button></td>
+            </tr>
+           
+        </thead>
+    </table>
+
 </body>
 </html>
 

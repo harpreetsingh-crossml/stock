@@ -16,7 +16,7 @@
 
     </head>
 <body>
-    <h3>Buy Stocks</h3>
+    <h3><b>Buy Stocks</b></h3>
     <form method="POST" action="{% url 'userside:buy-stock' %}">
         {% csrf_token %}
         {{ form.as_p }}

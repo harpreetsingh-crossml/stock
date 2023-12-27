@@ -1,4 +1,4 @@
-{% extends "userside/stocks.html" %}
+{% extends "stock_quote/stock_home.html" %}
 {% load static %}
 {% csrf_token %}
 {% block body %}
@@ -20,14 +20,14 @@
 
     </head>
 <body>
-    <h3>Portfolio</h3>
+    <h3><b>Portfolio</b></h3>
     <h4>Cash Balance:- &#8377;20500</h4>
     <p>Cash Balance: ${{ total_cash }}</p>
     <p>{{ cash_balance }}</p>
     <table>
         <thead>
             <tr>
-                <th>Symbol</th>
+                <th>Stock</th>
                 <th>Shares</th>
                 <th>Current Price</th>
                 <th>Total Value</th>

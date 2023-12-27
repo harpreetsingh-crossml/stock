@@ -27,11 +27,11 @@
 
     <nav class="blue">
         <div class="nav-wrapper">
-          <a href="#" class="brand-logo center">Stocks Trading</a>
+          <a href="#" class="brand-logo center"><b>Stocks Trading</b></a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
           
-          <li ><a href="{% url 'userside:index2' %}">Home</a></li>
+          <li ><a href="{% url 'userside:home' %}">Home</a></li>
           <li ><a href="{% url 'stock_quote:quote' %}">Stock Quote</a></li>
           <li ><a href="{% url 'userside:buy-stock' %}">buy</a></li>
           <li ><a href="{% url 'userside:sell-stock' %}">sell</a></li>
@@ -101,7 +101,7 @@
                     <h6>Links</h6>
                     {% if request.user.is_authenticated %}
                     <ul class="footer-nav">
-                        <li><a href="{% url 'userside:index2' %}">Home</a></li>
+                        <li><a href="{% url 'userside:home' %}">Home</a></li>
                         <li><a href="{% url 'userside:logout' %}">Logout</a></li>
                     </ul>
                     {% endif %}
